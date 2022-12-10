@@ -8,8 +8,8 @@ def xgcd(rm2, rm1, ym2, ym1, i):
     y0 = ym2 - ym1 * q0
     
     print(f'#{i+1}\n    r_{{{i-2}}} = r_{{{i-1}}} * q_{{{i}}} + r_{{{i}}}')
-    print(f'    r_{{{i}}} =', r0, f'\n    q_{{{i}}} =', q0)
-    print(f'    y_{{{i}}} = y_{{{i-2}}} - y_{{{i-1}}} * q_{{{i}}} =', y0)
+    print(f'    r_{{{i}}} =', latex(r0/1), f'\n    q_{{{i}}} =', latex(q0/1))
+    print(f'    y_{{{i}}} = y_{{{i-2}}} - y_{{{i-1}}} * q_{{{i}}} =', latex(y0/1))
     
     if r0.degree() == 0:
         return quo(y0, r0)
@@ -22,22 +22,20 @@ x = Symbol('x')
 # output M^{-1}
 n = 5 #
 
-F = FiniteField(n)
-
-Q = poly(x**2+3*x+3, x, domain=F) #
-a = poly(3*x+4, x, domain=F) #
-b = poly(x+2, x, domain=F) #
-c = poly(x+3, x, domain=F) #
-d = poly(3*x+2, x, domain=F) #
+Q = poly(x**2+3*x+3, x, modulus=n) #
+a = poly(3*x+4, x, modulus=n) #
+b = poly(x+2, x, modulus=n) #
+c = poly(x+3, x, modulus=n) #
+d = poly(3*x+2, x, modulus=n) #
 
 det = rem(a*d - b*c, Q)
-ym2 = poly(0, x, domain=F)
-ym1 = poly(1, x, domain=F)
-print('#0\n    r_{-2} =', Q)
-print('    r_{-1} =', det)
+ym2 = poly(0, x, modulus=n)
+ym1 = poly(1, x, modulus=n)
+print(f'All coefficients are mod {n}')
+print('#0\n    r_{-2} =', latex(Q/1))
+print('    r_{-1} =', latex(det/1))
 print('    y_{-2} = 0\n    y_{-1} = 1')
 
-#f = invert(g, Q)
 det = xgcd(Q, det, ym2, ym1, 0)
 
 newa = rem(det*d, Q)
@@ -45,14 +43,8 @@ newb = rem(det*-b, Q)
 newc = rem(det*-c, Q)
 newd = rem(det*a, Q)
 
-#lhs = rem(g*f, Q)
-#rhs = 1
-#correct = lhs == rhs
-#print('Check:', lhs, '==', rhs, 'is', correct)
-
-#if correct: print('CHECK PASSED!')
-
+#TODO: Check if everything is correct
 print('\nAnswer:')
-print('[', newa, newb, ']')
-print('[', newc, newd, ']')
+print('[', latex(newa/1).rjust(10), latex(newb/1).rjust(10), ']')
+print('[', latex(newc/1).rjust(10), latex(newd/1).rjust(10), ']')
 
