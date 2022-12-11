@@ -1,5 +1,5 @@
 from sympy import *
-
+from sympy.polys.agca.extensions import FiniteExtension
 
 x = Symbol('x')
 a = Symbol('a')
@@ -21,10 +21,19 @@ powers = [factor[1] for factor in factors if factor[0].degree() > 1]
 ans = [str(key%n) for key in roots.keys()]
 
 #for g, power in zip(nonlinears, powers):
+
 assert(len(nonlinears) == len(powers) == 1)
 
 g = nonlinears[0]
 power = powers[0]
+
+# This should theoretically work, but it rather gives NotImplementedError.
+# F = FiniteExtension(g)
+# newQ = poly(Q.as_expr(), x, domain=F)
+# print(newQ.factor_list())
+# print(newQ.ground_roots())
+# Loop should be: over all non-linear add new extension into domain, after loop call factor_list() or ground_roots()
+# Or not...
 print('g(x) = ', latex(g/1), f'to the power of {power}') 
 print(f'Consider field F_{{{n}}}/((g(x)))')
 groot_powers = [n**s for s in range(g.degree())]
@@ -36,51 +45,3 @@ for gp in groot_powers:
 # For loop should end here. No idea how to handle multiple irreducible polynomials
 ans = ', '.join(ans)
 print(f'\nAnswer: roots are {ans} (multiplicities are ignored) in F_{{{n}}}/({latex(g/1)}) ')
-'''
-maxpow = n**Q.degree() - 1
-
-pows = []
-
-while k not in pows:
-    pows += [k]
-    k = (k*n) % maxpow
-    # k *= n
-    # if (k >= maxpow): break
-    
-print(f'Max power is {maxpow}')
-roots = [f'a^{{{p}}}' for p in pows]
-print(f'Roots are {roots}')
-
-p = poly(1, x, a, modulus=n)
-
-for apow in pows:
-    p *= poly(x-a**apow, x, a, modulus=n)
-print('Min poly is', p);
-xpoly = {}
-
-test = {}
-for px, pa in p.monoms():
-     if px in test:
-         test[px] += [pa]
-     else:
-         test[px] = [pa]
-print('powers test', test)
-for px, pa in p.monoms():
-    if px in xpoly:
-        xpoly[px] += poly(x**pa, x, modulus=n)
-    else:
-        xpoly[px] = poly(x**pa, x, modulus=n)
-print('Simplify coefficients:')
-
-f = poly(0, x, modulus=n)
-print(xpoly)
-
-for px in xpoly.keys():    
-    newp = rem(xpoly[px], Q)
-    print(f'x**{px}:', str(xpoly[px]/1).replace('x**', 'a**').ljust(len(pows)*((maxpow+9)//10 + 5)), 'mod Q is', newp/1 % n)
-
-    if newp.degree() > 0:
-        print(f'Error! Degree of {xpoly[px]} should be zero!')
-    f += poly(newp * x**px, x, modulus=n)
-print('\nAnswer:', f)
-'''
