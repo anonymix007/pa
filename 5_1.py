@@ -1,18 +1,20 @@
 from sympy import *
-from sympy.polys.agca.extensions import FiniteExtension
-
+import sys
+stdout_fileno = sys.stdout
 x = Symbol('x')
 a = Symbol('a')
 
 # input coeff mod n, Q
 # output f
 
-n = 3
-Q = poly(x**3+x+2, x, modulus=n) #
+print('Input n:')
+n = int(input()) # 3
+print('Input Q:')
+Q = poly(input(), x, modulus=n) #x**3+x+2
 
-roots = Q.ground_roots() # {root : multiplicity
+roots = Q.ground_roots() # {root : multiplicity}
 A, factors = Q.factor_list()
-
+sys.stdout = open('out/5_1.txt', 'w')
 print(f'Factorization in F_{{{n}}} is ' + (f'{A} *' if A > 1 else '') + '*'.join([f'({latex(f[0]/1)})' + (f'**{f[1]}' if f[1]>1 else '') for f in factors]))
 
 nonlinears = [factor[0] for factor in factors if factor[0].degree() > 1]
@@ -45,3 +47,7 @@ for gp in groot_powers:
 # For loop should end here. No idea how to handle multiple irreducible polynomials
 ans = ', '.join(ans)
 print(f'\nAnswer: roots are {ans} (multiplicities are ignored) in F_{{{n}}}/({latex(g/1)}) ')
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

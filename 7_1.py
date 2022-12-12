@@ -1,4 +1,6 @@
 from sympy import *
+import sys
+stdout_fileno = sys.stdout
 
 
 def get_simplification(ais, si):
@@ -58,14 +60,19 @@ a = Symbol('a')
 # input n, r, Q, w
 # output s(x)
 
-n = 2
-Q = poly(x**4+x+1, modulus=n)
-r = 2
-w = poly(x**14+x**10+x**5+x**4, modulus=n)
+
+print('Input n:') 
+n = int(input()) #2
+print('Input Q:') 
+Q = poly(input(), modulus=n) #x**4+x+1
+print('Input r:')
+r = int(input()) #2
+print('Input w:') 
+w = poly(input(), modulus=n)# x**14+x**10+x**5+x**4
 
 m = Q.degree()
 p = n**m - 1
-
+sys.stdout = open('out/7_1.txt', 'w')
 print(f'Simplify powers of a (from 1 to {p})')
 
 ais = {}
@@ -121,3 +128,8 @@ s = xgcd(rm2, rm1, ym2, ym1, 0, r, p)
 print('CAUTION: multivariate polynomial division is too hard, so this uses dirty hack!')
 
 print(f'\nAnswer: s(x) =', latex(s/1))
+
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

@@ -1,5 +1,6 @@
 from sympy import *
-
+import sys
+stdout_fileno = sys.stdout
 
 def xgcd(rm2, rm1, ym2, ym1, i):
     
@@ -21,20 +22,28 @@ x = Symbol('x')
 # input coeff mod n, g, w, h
 # output f
 
+print('Input n:')
+
 '''
 n = 7 #
 h = poly(6*x**3+x**2+3, x, modulus=n) #
 g = rem(poly(2*x**3+6*x**2+4*x+5, x, modulus=n), h) #
 w = poly(5*x+4, x, modulus=n) #
 '''
-n = 7 #
-h = poly(6*x**3+6*x, x, modulus=n) #
+n = int(input()) # 7
+print('Input h:') # 6*x**3+6*x
+h = poly(input(), x, modulus=n) #
 #g = poly(3*x**3+5*x**2+6*x+1, x, modulus=n) #
-g = rem(poly(3*x**3+5*x**2+6*x+1, x, modulus=n), h) #
-w = poly(5*x+1, x, modulus=n) #
+print('Input g:') #3*x**3+5*x**2+6*x+1 
+g = rem(poly(input(), x, modulus=n), h) #
+print('Input w:')# 5*x+1
+w = poly(input(), x, modulus=n) #
 #'''
 ym2 = poly(0, x, modulus=n)
 ym1 = poly(1, x, modulus=n)
+
+sys.stdout = open('out/2_1.txt', 'w')
+
 print(f'All coefficients are mod {n}')
 
 print('#0\n    r_{-2} =', latex(h/1))
@@ -53,3 +62,8 @@ if correct: print('CHECK PASSED!')
 
 print('\nAnswer: f(x) =', latex(f/1))
 print('Invert:', latex(rem(invert(g, h) * w, h)/1))
+
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

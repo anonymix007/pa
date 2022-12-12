@@ -1,5 +1,6 @@
 from sympy import *
-
+import sys
+stdout_fileno = sys.stdout
 
 def get_simplification(ais, si):
     if si in ais: 
@@ -15,13 +16,16 @@ a = Symbol('a')
 # input n, r, Q, w
 # output dec(x)
 
-n = 2
-Q = poly(x**3+x+1, modulus=n)
-w = poly(x**7+x**6+x**2+1, modulus=n)
+print('Input n:')
+n = int(input()) # 2
+print('Input Q:')
+Q = poly(input(), modulus=n)#x**3+x+1
+print('Input w:')
+w = poly(input(), modulus=n)#x**7+x**6+x**2+1
 
 m = Q.degree()
 p = n**m - 1
-
+sys.stdout = open('out/7_3.txt', 'w')
 print(f'Simplify powers of a (from 1 to {p})')
 
 ais = {}
@@ -39,3 +43,7 @@ err = poly(x**k, x, modulus=n)
 v = w + err
 print('s = w(a) =', latex(w.replace(x, a)/1), '=', latex(s/1), '=> k =', k)
 print('v(x) = w(x) + e(x) =', latex(v/1)) 
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

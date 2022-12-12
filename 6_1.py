@@ -1,4 +1,6 @@
 from sympy import *
+import sys
+stdout_fileno = sys.stdout
 
 
 def poly_to_bin(polynomial, length):
@@ -14,10 +16,14 @@ a = Symbol('a')
 # output d, f (=encoded u)
 
 #'''
-m = 7 #
-n = 3 #
-g = poly(x**4+x**3+x**2+1, x, modulus=2) #
-u = poly(x**2+1, x, modulus=2) #
+print('Input m:')
+m = int(input()) #7
+print('Input n:')
+n = int(input()) #3
+print('Input g:')
+g = poly(input(), x, modulus=2) #x**4+x**3+x**2+1
+print('Input u:')
+u = poly(input(), x, modulus=2) #x**2+1
 '''
 
 #'''
@@ -26,7 +32,7 @@ k = g.degree()
 f = u * poly(x**k, modulus=2)
 
 rowlen = n
-
+sys.stdout = open('out/6_1.txt', 'w')
 print(f'All coefficients are mod {2}')
 print(f'Code is ({m}, {n}), so {m} bits in encoded words, {n} bits in to-be-coded words')
 print(f'Bruteforce {n} coefficients, total {2**n - 1} combinations')
@@ -54,3 +60,7 @@ print('f =', latex(f/1), f'or {enc} in binary')
 
 print(f'\nAnswer: distance is {d}, encoded polynomial is {enc}')
 
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

@@ -1,12 +1,15 @@
 from sympy import *
+import sys
+stdout_fileno = sys.stdout
 x = Symbol('x')
 # input n
 # output m, k
 
-n = 5 #
+print('Input n:')
+n = int(input()) # 5
 
 p = 2 # binary code
-
+sys.stdout = open('out/4_4.txt', 'w')
 print(f'Consider x^{{{n}}}, find its factorization under F_{{{p}}}')
 
 orbits = set()
@@ -27,3 +30,7 @@ for orbit in orbits:
     k = n - m
     print(f'    m = {m}, k = {k}')
     
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

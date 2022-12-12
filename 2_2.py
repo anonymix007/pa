@@ -1,5 +1,6 @@
 from sympy import *
-
+import sys
+stdout_fileno = sys.stdout
 
 def xgcd(rm2, rm1, ym2, ym1, i):
     
@@ -20,13 +21,18 @@ x = Symbol('x')
 
 # input coeff mod n, Q, g
 # output f
-n = 5 #
-Q = poly(x**4+x**3-5*x**2+x+3, x, modulus=n) #
-g = poly(x**2+4*x+2, x, modulus=n) #
+print('Input n:')
+n = int(input()) # 5
+print('Input Q:')
+Q = poly(input(), x, modulus=n) #x**4+x**3-5*x**2+x+3
+print('Input g:')
+g = poly(input(), x, modulus=n) #x**2+4*x+2
 
 
 ym2 = poly(0, x, modulus=n)
 ym1 = poly(1, x, modulus=n)
+
+sys.stdout = open('out/2_2.txt', 'w')
 print(f'All coefficients are mod {n}')
 print('#0\n    r_{-2} =', latex(Q/1))
 print('    r_{-1} =', latex(g/1))
@@ -45,3 +51,7 @@ if correct: print('CHECK PASSED!')
 print('\nAnswer:', latex(f/1))
 print('Invert:', latex(invert(g, Q)/1))
 
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

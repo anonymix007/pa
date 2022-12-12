@@ -1,4 +1,6 @@
 from sympy import *
+import sys
+stdout_fileno = sys.stdout
 
 
 x = Symbol('x')
@@ -8,9 +10,12 @@ a = Symbol('a')
 # output f
 
 #'''
-n = 5 #
-k = 3 #
-Q = poly(x**2+x+2, x, modulus=n) #
+print('Input n:')
+n = int(input()) #5
+print('Input k:')
+k = int(input()) #3
+print('Input Q:')
+Q = poly(input(), x, modulus=n) #x**2+x+2
 '''
 n = 2
 k = 7
@@ -18,6 +23,7 @@ Q = poly(x**4+x**3+1, x, modulus=n) #
 #'''
 maxpow = n**Q.degree() - 1
 
+sys.stdout = open('out/5_2.txt', 'w')
 print(f'All coefficients are mod {n}')
 
 pows = []
@@ -64,3 +70,8 @@ for px in xpoly.keys():
         print(f'Error! Degree of {latex(xpoly[px]/1)} should be zero!')
     f += poly(newp * x**px, x, modulus=n)
 print('\nAnswer:', latex(f/1))
+
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')

@@ -1,5 +1,6 @@
 from sympy import *
-
+import sys
+stdout_fileno = sys.stdout
 
 def xgcd(rm2, rm1, ym2, ym1, i):
     
@@ -20,17 +21,21 @@ x = Symbol('x')
 
 # input coeff mod n, Q, M=[[a b][c d]]
 # output M^{-1}
-n = 5 #
+print('Input n:')
+n = int(input()) #5
 
-Q = poly(x**2+3*x+3, x, modulus=n) #
-a = poly(3*x+4, x, modulus=n) #
-b = poly(x+2, x, modulus=n) #
-c = poly(x+3, x, modulus=n) #
-d = poly(3*x+2, x, modulus=n) #
+print('Input Q:')
+Q = poly(input(), x, modulus=n) #x**2+3*x+3
+print('Input M = [[a b] [c d]] line by line:')
+a = poly(input(), x, modulus=n) #3*x+4
+b = poly(input(), x, modulus=n) #x+2
+c = poly(input(), x, modulus=n) #x+3
+d = poly(input(), x, modulus=n) #3*x+2
 
 det = rem(a*d - b*c, Q)
 ym2 = poly(0, x, modulus=n)
 ym1 = poly(1, x, modulus=n)
+sys.stdout = open('out/3_1.txt', 'w')
 print(f'All coefficients are mod {n}')
 print('#0\n    r_{-2} =', latex(Q/1))
 print('    r_{-1} =', latex(det/1))
@@ -48,3 +53,7 @@ print('\nAnswer:')
 print('[', latex(newa/1).rjust(10), latex(newb/1).rjust(10), ']')
 print('[', latex(newc/1).rjust(10), latex(newd/1).rjust(10), ']')
 
+sys.stdout.close()
+sys.stdout = stdout_fileno
+
+print('File written')
